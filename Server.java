@@ -10,12 +10,13 @@ import java.net.*;
 import java.security.KeyStore.TrustedCertificateEntry;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.BufferedReader;
 
  public class Server extends JFrame
  {
-
-   private JTextField userText;
-   private JTextArea chatWindow;
+   private String userText;
+   //private JTextField userText;
+   //private JTextArea chatWindow;
    private ObjectOutputStream output;
    private ObjectInputStream input;
    private ServerSocket server;
@@ -24,25 +25,7 @@ import javax.swing.*;
    //Constructor
    public Server ()
    {
-     super ("Instant Messenger");
-     userText = new JTextField ();
-     userText.setEditable (false);
-     userText.addActionListener ( 
-       new ActionListener()
-       {
-         public void actionPerformed (ActionEvent event)
-         {
-           sendMessage (event.getActionCommand());
-           userText.setText("");
-         }
-       }
-     );
-     add (userText, BorderLayout.SOUTH);
-     chatWindow = new JTextArea();
-     chatWindow.setEditable (false);
-     add (new JScrollPane(chatWindow));
-     setSize (500, 500);
-     setVisible (true);
+     
    }
 
    public void startRunning ()
@@ -87,13 +70,21 @@ import javax.swing.*;
 
    private void whileChatting () throws IOException
    {
-     userText.setEditable (true);
      String message = "";
+     String myText = "";
+     BufferedReader reader = new BufferedReader(new InputStreamReader (System.in));
+
      do {
        try 
        {
          message = (String)input.readObject();
          showMessage ("\n" + message);
+         myText = reader.readLine();
+         System.in.skip(100);
+         if (myText != "")
+         {
+           sendMessage(myText);
+         }
        } catch (ClassNotFoundException classNotFoundException)
        {
          showMessage ("\n Invalid Input");
@@ -103,7 +94,6 @@ import javax.swing.*;
 
    private void endProgram () 
    {
-     chatWindow.setEditable (false);
      try
      {
        output.close();
@@ -125,20 +115,12 @@ import javax.swing.*;
        showMessage ("\nSERVER - " + message);
      } catch (IOException ioException)
      {
-       chatWindow.append ("\n Error sending message");
+       showMessage ("\n Error sending message");
      }
    }
 
    private void showMessage (String text)
    {
-     SwingUtilities.invokeLater(
-       new Runnable () 
-       {
-         public void run () 
-         {
-           chatWindow.append (text);
-         }
-       }
-     );
+     System.out.println(text);
    } 
  }
