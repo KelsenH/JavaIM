@@ -5,14 +5,11 @@
 
 
 import java.io.*;
-import java.awt.*;
 import java.net.*;
 import java.security.KeyStore.TrustedCertificateEntry;
-import java.awt.event.*;
-import javax.swing.*;
 import java.io.BufferedReader;
 
- public class Server extends JFrame
+ public class Server
  {
    private String userText;
    //private JTextField userText;
