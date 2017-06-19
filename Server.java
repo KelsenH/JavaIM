@@ -53,7 +53,8 @@ import java.io.BufferedReader;
 
    private void waitForConnection () throws IOException
    {
-     showMessage ("Waiting for connection . . . \n" + server.getInetAddress() + "\n" + server.getLocalPort() + "\n");
+     String ip = InetAddress.getLocalHost().getHostAddress();
+     showMessage ("Waiting for connection . . . \n" + ip + "\n" + server.getLocalPort() + "\n");
      connection = server.accept ();
      showMessage ("Now connected to " + connection.getInetAddress().getHostName() + "\n");
    }
